@@ -43,6 +43,7 @@ app.use(function(err, req, res, next) {
 
 const url = "https://api.kucoin.com/api/v1/symbols"
 const usdtPairs = [];
+const map = new Map();
 
 const getData = async (url) => {
 
@@ -52,26 +53,31 @@ const getData = async (url) => {
     
     for (let coin in data){
       if (data[coin].symbol.includes("USDT")){
-        usdtPairs.push(data[coin])
+        //usdtPairs.push(data[coin])
+        let curr = new Coin(data[coin]);
+        map.set(curr.symbol.split('-')[0], coin);
       }
-       //console.log(data[coin].symbol)
     }
 
-    console.log("Number of coins is: " + usdtPairs.length)
+    //console.log("Number of coins is: " + usdtPairs.length)
 
+
+    //console.log("THE FIRST COIN IS: " + firstCoin.symbol);
+    console.log(map.keys());
     
   } catch (error) {
     console.log(error)
   }
 }
 
+const initializeCoins = () => {
+  //loop through usdtPairs and initialize coins base on symbol
+  
+}
+
 
 
 getData(url);
-
-var firstCoin = new Coin(usdtPairs[0])
-console.log("THE FIRST COIN IS: " + firstCoin.symbol);
-
 
 
 module.exports = app;
